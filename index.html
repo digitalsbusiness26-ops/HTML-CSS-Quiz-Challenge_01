@@ -509,8 +509,8 @@ const quizSections = [
                 question: "You're creating the main title for your blog post, which should be the most prominent heading on the page. Which HTML element would you use for this?",
                 answers: [
                     { text: "<h6>", correct: false },
-                    { text: "<head>", correct: false },
                     { text: "<h1>", correct: true },
+                    { text: "<head>", correct: false },
                     { text: "<heading>", correct: false }
                 ]
             },
@@ -520,17 +520,17 @@ const quizSections = [
                 answers: [
                     { text: "<p>", correct: false },
                     { text: "<break>", correct: false },
-                    { text: "<br>", correct: true },
-                    { text: "<newline>", correct: false }
+                    { text: "<newline>", correct: false },
+                    { text: "<br>", correct: true }
                 ]
             },
 
             {
                 question: "You're embedding an image of your company logo on your website. Which attribute within the `<img>` tag is used to specify the path to the image file?",
                 answers: [
-                    { text: "link", correct: false },
-                    { text: "href", correct: false },
                     { text: "src", correct: true },
+                    { text: "link", correct: false },
+                    { text: "href", correct: false }, 
                     { text: "path", correct: false }
                 ]
             },
@@ -549,17 +549,17 @@ const quizSections = [
                 question: "You are building a pricing table and want a header cell titled 'Standard Plan Options' to span across 3 columns horizontally. Which attribute should you add to the <th> tag?",
                 answers: [
                     { text: "rowspan=\"3\"", correct: false },
-                    { text: "colspan=\"3\"", correct: true },
                     { text: "span=\"3\"", correct: false },
-                    { text: "col-width=\"3\"", correct: false }
+                    { text: "col-width=\"3\"", correct: false },
+                    { text: "colspan=\"3\"", correct: true },
                 ]
             },
 
             {
                 question: "You are building a multilingual website and notice that special characters and emojis are displaying as broken symbols. Which attribute and value pair should you add to the <meta> tag to enforce standard universal character encoding?",
                 answers: [
-                    { text: "encoding=\"utf-8\"", correct: false },
                     { text: "charset=\"utf-8\"", correct: true },
+                    { text: "encoding=\"utf-8\"", correct: false },   
                     { text: "lang=\"utf-8\"", correct: false },
                     { text: "type=\"utf-8\"", correct: false }
                 ]
@@ -569,8 +569,8 @@ const quizSections = [
                 question: "You want search engines to display a summary snippet of your web page in search results. You add a <meta name=\"description\"> tag to the <head> section. Which attribute holds the actual summary text?",
                 answers: [
                     { text: "value=\"Page summary here...\"", correct: false },
-                    { text: "content=\"Page summary here...\"", correct: true },
                     { text: "text=\"Page summary here...\"", correct: false },
+                    { text: "content=\"Page summary here...\"", correct: true },
                     { text: "summary=\"Page summary here...\"", correct: false }
                 ]
             },
@@ -589,8 +589,8 @@ const quizSections = [
                 question: "While setting up the head section of a website, you need to add hidden key-value information for browsers and search engines—such as responsive viewport rules, page descriptions, and character encoding. Which tag is used to define these non-visible page details?",
                 answers: [
                     { text: "<data>", correct: false },
-                    { text: "<meta>", correct: true },
                     { text: "<header>", correct: false },
+                    { text: "<meta>", correct: true },
                     { text: "<info>", correct: false }
                 ]
             },
@@ -598,8 +598,8 @@ const quizSections = [
             {
                 question: "You are designing a portfolio website and want to embed a photograph on your homepage. Which HTML tag is used to display an image on a webpage?",
                 answers: [
-                    { text: "<image>", correct: false },
                     { text: "<img>", correct: true },
+                    { text: "<image>", correct: false },
                     { text: "<photo>", correct: false },
                     { text: "<media>", correct: false }
                 ]
@@ -609,9 +609,9 @@ const quizSections = [
                 question: "You are working on a team project and want to leave a note inside your HTML file to explain a complex section to your teammates. You need this note to be visible in the source code but completely hidden when browsers render the live page. Which syntax should you use?",
                 answers: [
                     { text: "/* Note text here */", correct: false },
-                    { text: "<!-- Note text here -->", correct: true },
                     { text: "// Note text here", correct: false },
-                    { text: "<comment>Note text here</comment>", correct: false }
+                    { text: "<comment>Note text here</comment>", correct: false },
+                    { text: "<!-- Note text here -->", correct: true },
                 ]
             },
 
@@ -629,9 +629,9 @@ const quizSections = [
                 question: "You are reviewing the HTML markup `<a href=\"index.html\">`. In this tag, `href` identifies the specific property being set, while `\"index.html\"` provides the setting itself. What are `href` and `\"index.html\"` officially called in HTML syntax?",
                 answers: [
                     { text: "Tag name and Tag content", correct: false },
-                    { text: "Attribute name and Attribute value", correct: true },
                     { text: "Attribute value and Attribute name", correct: false },
-                    { text: "Property selector and Property rule", correct: false }
+                    { text: "Property selector and Property rule", correct: false },
+                    { text: "Attribute name and Attribute value", correct: true },
                 ]
             }
         ]
