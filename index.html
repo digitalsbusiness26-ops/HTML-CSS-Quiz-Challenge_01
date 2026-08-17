@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML & CSS Quiz Challenge</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            transition: background 1s ease-in-out;
+        }
+
+        .extra-unlocked-bg {
+            background: linear-gradient(135deg, #a8ff78, #78ffd6);
+        }
+
+        .html-tag-particle {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            animation: floatUp 5s forwards ease-out;
+            opacity: 0;
+            pointer-events: none;
+            user-select: none;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.5);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100vh) rotate(720deg) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.88);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+            max-width: 80%;
+        }
+
+        .message-box button {
+            background-color: #3b82f6;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .message-box button:hover {
+            background-color: #2563eb;
+        }
+
+        /*
+            IMPORTANT:
+            The message-box OK button must remain usable.
+            It must NEVER inherit a disabled state from
+            another quiz button.
+        */
+
+        .message-box button:disabled {
+            opacity: 1 !important;
+            cursor: pointer !important;
+            pointer-events: auto !important;
+            background-color: #3b82f6 !important;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .timer-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .timer-bar {
+            width: 100%;
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 8px;
+            transition: width 0.9s linear, background-color 0.5s ease;
+        }
+
+        .draggable-item {
+            background-color: #a7f3d0;
+            color: #065f46;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 8px;
+            cursor: grab;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease-out, background-color 0.2s ease-out;
+            font-weight: 600;
+            text-align: center;
+            width: 100%;
+        }
+
+        .draggable-item:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+
+        .drop-target {
+            background-color: #e0f2fe;
+            border: 2px dashed #93c5fd;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 8px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 500;
+            color: #1e40af;
+            transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+            width: 100%;
+        }
+
+        .drop-target.drag-over {
+            background-color: #bfdbfe;
+            border-color: #3b82f6;
+        }
+
+        .drop-target.correct-match {
+            background-color: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .draggable-item.dropped {
+            background-color: #10b981;
+            color: white;
+            box-shadow: none;
+            cursor: default;
+        }
+
+        .drag-drop-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .drag-drop-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .ordering-item {
+            background-color: #fef3c7;
+            color: #92400e;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 8px;
+            cursor: grab;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease-out, background-color 0.2s ease-out;
+            font-weight: 600;
+            text-align: left;
+            width: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .ordering-item:active {
+            cursor: grabbing;
+            transform: scale(1.02);
+        }
+
+        .ordering-item.drag-over-placeholder-above {
+            border-top: 4px solid #fbbf24;
+        }
+
+        .ordering-item.drag-over-placeholder-below {
+            border-bottom: 4px solid #fbbf24;
+        }
+
+        .ordering-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            min-height: 200px;
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 10px;
+            background-color: #f9fafb;
+        }
+
+        .check-order-button {
+            background-color: #10b981;
+            color: white;
+            font-weight: 700;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            box-shadow: 0 10px 15px -3px rgba(16,185,129,0.1),
+                        0 4px 6px -2px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .check-order-button:hover {
+            transform: scale(1.05);
+        }
+
+        .check-order-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 8px rgba(16,185,129,0.15);
+        }
+
+        .resume-box {
+            background: #eff6ff;
+            border: 2px solid #93c5fd;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .reset-final-button {
+            background-color: #ef4444;
+            color: white;
+            font-weight: 700;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            box-shadow: 0 10px 15px -3px rgba(239,68,68,0.15);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .reset-final-button:hover {
+            background-color: #dc2626;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 700px) {
+            .drag-drop-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #game-container {
+                margin: 10px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body class="selection:bg-blue-200 selection:text-blue-800">
+
+<div id="game-container"
+     class="bg-white p-8 rounded-xl shadow-2xl max-w-lg w-full text-center transform transition-transform duration-300 scale-100">
+
+    <h1 class="text-4xl font-bold text-gray-800 mb-6">
+        HTML & CSS Quiz Challenge!
+    </h1>
+
+    <div id="start-screen">
+
+        <p class="text-lg text-gray-600 mb-8">
+            Test your knowledge of HTML & CSS and unlock a fun visual treat!
+        </p>
+
+        <button id="start-button"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300">
+            Start Quiz
+        </button>
+
+        <div id="resume-box" class="resume-box hidden">
+
+            <p class="font-bold text-blue-800 mb-2">
+                Saved Progress Found
+            </p>
+
+            <p id="resume-text" class="text-sm text-gray-700 mb-3"></p>
+
+            <button id="resume-button"
+                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full">
+                Resume Quiz
+            </button>
+
+            <button id="clear-saved-button"
+                    class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-full ml-2">
+                Start Fresh
+            </button>
+
+        </div>
+    </div>
+
+    <div id="quiz-screen-mc" class="hidden">
+
+        <div class="timer-bar-container">
+            <div id="timer-bar-mc" class="timer-bar"></div>
+        </div>
+
+        <p id="question-text-mc"
+           class="text-2xl font-semibold text-gray-700 mb-8"></p>
+
+        <div id="answers-container-mc"
+             class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        </div>
+
+        <p class="text-lg text-gray-600">
+            Score:
+            <span id="score-display-mc"
+                  class="font-bold text-blue-600">0</span>
+        </p>
+
+        <p id="progress-text-mc"
+           class="text-sm text-gray-500 mt-2"></p>
+
+        <p class="text-sm text-gray-500">
+            Section 1 of 3
+        </p>
+
+    </div>
+
+    <div id="quiz-screen-dd" class="hidden">
+
+        <div class="timer-bar-container">
+            <div id="timer-bar-dd" class="timer-bar"></div>
+        </div>
+
+        <p id="question-text-dd"
+           class="text-2xl font-semibold text-gray-700 mb-8"></p>
+
+        <div class="drag-drop-grid">
+
+            <div id="draggable-items-container"
+                 class="drag-drop-column">
+            </div>
+
+            <div id="drop-targets-container"
+                 class="drag-drop-column">
+            </div>
+
+        </div>
+
+        <p class="text-lg text-gray-600 mt-8">
+            Score:
+            <span id="score-display-dd"
+                  class="font-bold text-blue-600">0</span>
+        </p>
+
+        <p id="progress-text-dd"
+           class="text-sm text-gray-500 mt-2"></p>
+
+        <p class="text-sm text-gray-500">
+            Section 2 of 3
+        </p>
+
+    </div>
+
+    <div id="quiz-screen-ordering" class="hidden">
+
+        <div class="timer-bar-container">
+            <div id="timer-bar-ordering" class="timer-bar"></div>
+        </div>
+
+        <p id="question-text-ordering"
+           class="text-2xl font-semibold text-gray-700 mb-8"></p>
+
+        <div id="ordering-items-container"
+             class="ordering-container">
+        </div>
+
+        <button id="check-order-button"
+                class="check-order-button">
+            Check Order
+        </button>
+
+        <p class="text-lg text-gray-600 mt-8">
+            Score:
+            <span id="score-display-ordering"
+                  class="font-bold text-blue-600">0</span>
+        </p>
+
+        <p id="progress-text-ordering"
+           class="text-sm text-gray-500 mt-2"></p>
+
+        <p class="text-sm text-gray-500">
+            Section 3 of 3
+        </p>
+
+    </div>
+
+    <div id="result-screen" class="hidden">
+
+        <p id="final-message"
+           class="text-3xl font-bold text-gray-800 mb-6">
+        </p>
+
+        <p id="final-score-display"
+           class="text-xl text-gray-600 mb-8">
+        </p>
+
+        <button id="restart-button"
+                class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300">
+            Play Again
+        </button>
+
+        <br>
+
+        <button id="final-reset-button"
+                class="reset-final-button">
+            Reset & Start Over
+        </button>
+
+    </div>
+
+</div>
+
+<div id="custom-message-box"
+     class="message-box">
+
+    <p id="message-content"
+       class="text-xl font-semibold"></p>
+
+    <button id="message-box-ok"
+            type="button">
+        OK
+    </button>
+
+</div>
+
+
+<script>
+
+/* ============================================================
+   QUIZ DATA
+   ============================================================ */
+
+const quizSections = [
+
+    {
+        type: "multiple-choice",
+        passingScore: 10,
+
+        questions: [
+
+            {
+                question: "You're building a personal portfolio website and want to include a section where visitors can click on your social media icons to go to your profiles. Which HTML tag would you use to create these clickable links?",
+                answers: [
+                    { text: "<link>", correct: false },
+                    { text: "<a>", correct: true },
+                    { text: "<href>", correct: false },
+                    { text: "<url>", correct: false }
+                ]
+            },
+
+            {
+                question: "You're designing a recipe website and need to list the ingredients without any specific order (e.g., flour, sugar, eggs). Which HTML tag is best suited for this purpose?",
+                answers: [
+                    { text: "<ol>", correct: false },
+                    { text: "<li>", correct: false },
+                    { text: "<ul>", correct: true },
+                    { text: "<list>", correct: false }
+                ]
+            },
+
+            {
+                question: "You're creating the main title for your blog post, which should be the most prominent heading on the page. Which HTML element would you use for this?",
+                answers: [
+                    { text: "<h6>", correct: false },
+                    { text: "<head>", correct: false },
+                    { text: "<h1>", correct: true },
+                    { text: "<heading>", correct: false }
+                ]
+            },
+
+            {
+                question: "You're writing a paragraph about your favorite hobbies, and you want to ensure that a new sentence starts on a fresh line without creating a new paragraph. Which HTML tag should you use?",
+                answers: [
+                    { text: "<p>", correct: false },
+                    { text: "<break>", correct: false },
+                    { text: "<br>", correct: true },
+                    { text: "<newline>", correct: false }
+                ]
+            },
+
+            {
+                question: "You're embedding an image of your company logo on your website. Which attribute within the `<img>` tag is used to specify the path to the image file?",
+                answers: [
+                    { text: "link", correct: false },
+                    { text: "href", correct: false },
+                    { text: "src", correct: true },
+                    { text: "path", correct: false }
+                ]
+            },
+
+            {
+                question: "You need to emphasize a crucial warning message within a paragraph, making it visually stand out as important text. Which HTML element would you use for this?",
+                answers: [
+                    { text: "<i>", correct: false },
+                    { text: "<strong>", correct: true },
+                    { text: "<bold>", correct: false },
+                    { text: "<important>", correct: false }
+                ]
+            },
+
+            {
+                question: "You are building a pricing table and want a header cell titled 'Standard Plan Options' to span across 3 columns horizontally. Which attribute should you add to the <th> tag?",
+                answers: [
+                    { text: "rowspan=\"3\"", correct: false },
+                    { text: "colspan=\"3\"", correct: true },
+                    { text: "span=\"3\"", correct: false },
+                    { text: "col-width=\"3\"", correct: false }
+                ]
+            },
+
+            {
+                question: "You are building a multilingual website and notice that special characters and emojis are displaying as broken symbols. Which attribute and value pair should you add to the <meta> tag to enforce standard universal character encoding?",
+                answers: [
+                    { text: "encoding=\"utf-8\"", correct: false },
+                    { text: "charset=\"utf-8\"", correct: true },
+                    { text: "lang=\"utf-8\"", correct: false },
+                    { text: "type=\"utf-8\"", correct: false }
+                ]
+            },
+
+            {
+                question: "You want search engines to display a summary snippet of your web page in search results. You add a <meta name=\"description\"> tag to the <head> section. Which attribute holds the actual summary text?",
+                answers: [
+                    { text: "value=\"Page summary here...\"", correct: false },
+                    { text: "content=\"Page summary here...\"", correct: true },
+                    { text: "text=\"Page summary here...\"", correct: false },
+                    { text: "summary=\"Page summary here...\"", correct: false }
+                ]
+            },
+
+            {
+                question: "You are structuring a webpage layout and need a generic container to group multiple elements. You want this container to automatically start on its own new line and span the full width of the page by default. Which HTML element should you choose?",
+                answers: [
+                    { text: "<span>", correct: false },
+                    { text: "<div>", correct: true },
+                    { text: "<a>", correct: false },
+                    { text: "<em>", correct: false }
+                ]
+            },
+
+            {
+                question: "While setting up the head section of a website, you need to add hidden key-value information for browsers and search engines—such as responsive viewport rules, page descriptions, and character encoding. Which tag is used to define these non-visible page details?",
+                answers: [
+                    { text: "<data>", correct: false },
+                    { text: "<meta>", correct: true },
+                    { text: "<header>", correct: false },
+                    { text: "<info>", correct: false }
+                ]
+            },
+
+            {
+                question: "You are designing a portfolio website and want to embed a photograph on your homepage. Which HTML tag is used to display an image on a webpage?",
+                answers: [
+                    { text: "<image>", correct: false },
+                    { text: "<img>", correct: true },
+                    { text: "<photo>", correct: false },
+                    { text: "<media>", correct: false }
+                ]
+            },
+
+            {
+                question: "You are working on a team project and want to leave a note inside your HTML file to explain a complex section to your teammates. You need this note to be visible in the source code but completely hidden when browsers render the live page. Which syntax should you use?",
+                answers: [
+                    { text: "/* Note text here */", correct: false },
+                    { text: "<!-- Note text here -->", correct: true },
+                    { text: "// Note text here", correct: false },
+                    { text: "<comment>Note text here</comment>", correct: false }
+                ]
+            },
+
+            {
+                question: "You are setting up the structure of a new webpage. After declaring the document type, you need to create the top-level parent container that wraps all other HTML elements on the page, including the <head> and <body>. Which element serves as the root of an HTML document?",
+                answers: [
+                    { text: "<root>", correct: false },
+                    { text: "<html>", correct: true },
+                    { text: "<main>", correct: false },
+                    { text: "<!DOCTYPE html>", correct: false }
+                ]
+            },
+
+            {
+                question: "You are reviewing the HTML markup `<a href=\"index.html\">`. In this tag, `href` identifies the specific property being set, while `\"index.html\"` provides the setting itself. What are `href` and `\"index.html\"` officially called in HTML syntax?",
+                answers: [
+                    { text: "Tag name and Tag content", correct: false },
+                    { text: "Attribute name and Attribute value", correct: true },
+                    { text: "Attribute value and Attribute name", correct: false },
+                    { text: "Property selector and Property rule", correct: false }
+                ]
+            }
+        ]
+    },
+
+    {
+        type: "drag-and-drop",
+        passingScore: 7,
+
+        questions: [
+
+            {
+                question: "Match the HTML/CSS term to its description:",
+
+                items: [
+                    { id: "h1_tag", text: "<h1>" },
+                    { id: "p_tag", text: "<p>" },
+                    { id: "div_tag", text: "<div>" },
+                    { id: "color_prop", text: "color" },
+                    { id: "margin_prop", text: "margin" }
+                ],
+
+                targets: [
+                    { id: "h1_desc", text: "Largest Heading" },
+                    { id: "p_desc", text: "Paragraph Text" },
+                    { id: "div_desc", text: "Generic Container" },
+                    { id: "color_desc", text: "Text Color" },
+                    { id: "margin_desc", text: "Outer Spacing" }
+                ],
+
+                correctPairs: {
+                    h1_tag: "h1_desc",
+                    p_tag: "p_desc",
+                    div_tag: "div_desc",
+                    color_prop: "color_desc",
+                    margin_prop: "margin_desc"
+                }
+            },
+
+            {
+                question: "Match the HTML/CSS term to its description:",
+
+                items: [
+                    { id: "a_tag", text: "<a>" },
+                    { id: "img_tag", text: "<img>" },
+                    { id: "ul_tag", text: "<ul>" },
+                    { id: "background_color_prop", text: "background-color" },
+                    { id: "font_size_prop", text: "font-size" }
+                ],
+
+                targets: [
+                    { id: "a_desc", text: "Creates a Hyperlink" },
+                    { id: "img_desc", text: "Embeds an Image" },
+                    { id: "ul_desc", text: "Unordered List" },
+                    { id: "background_color_desc", text: "Element Background" },
+                    { id: "font_size_desc", text: "Size of Text" }
+                ],
+
+                correctPairs: {
+                    a_tag: "a_desc",
+                    img_tag: "img_desc",
+                    ul_tag: "ul_desc",
+                    background_color_prop: "background_color_desc",
+                    font_size_prop: "font_size_desc"
+                }
+            },
+
+            {
+                question: "Match the HTML/CSS term to its description:",
+
+                items: [
+                    { id: "br_tag", text: "<br>" },
+                    { id: "input_tag", text: "<input>" },
+                    { id: "footer_tag", text: "<footer>" },
+                    { id: "padding_prop", text: "padding" },
+                    { id: "border_prop", text: "border" }
+                ],
+
+                targets: [
+                    { id: "br_desc", text: "Line Break" },
+                    { id: "input_desc", text: "Form Input Field" },
+                    { id: "footer_desc", text: "Section Footer" },
+                    { id: "padding_desc", text: "Inner Spacing" },
+                    { id: "border_desc", text: "Element Outline" }
+                ],
+
+                correctPairs: {
+                    br_tag: "br_desc",
+                    input_tag: "input_desc",
+                    footer_tag: "footer_desc",
+                    padding_prop: "padding_desc",
+                    border_prop: "border_desc"
+                }
+            },
+
+            {
+                question: "Match the HTML/CSS term to its description:",
+
+                items: [
+                    { id: "form_tag", text: "<form>" },
+                    { id: "label_tag", text: "<label>" },
+                    { id: "button_tag", text: "<button>" },
+                    { id: "text_align_prop", text: "text-align" },
+                    { id: "display_prop", text: "display" }
+                ],
+
+                targets: [
+                    { id: "form_desc", text: "Collects User Input" },
+                    { id: "label_desc", text: "Input Field Caption" },
+                    { id: "button_desc", text: "Clickable Action" },
+                    { id: "text_align_desc", text: "Horizontal Text Alignment" },
+                    { id: "display_desc", text: "Element Layout Type" }
+                ],
+
+                correctPairs: {
+                    form_tag: "form_desc",
+                    label_tag: "label_desc",
+                    button_tag: "button_desc",
+                    text_align_prop: "text_align_desc",
+                    display_prop: "display_desc"
+                }
+            },
+
+            {
+                question: "Match the HTML/CSS term to its description:",
+
+                items: [
+                    { id: "table_tag", text: "<table>" },
+                    { id: "tr_tag", text: "<tr>" },
+                    { id: "td_tag", text: "<td>" },
+                    { id: "width_prop", text: "width" },
+                    { id: "height_prop", text: "height" }
+                ],
+
+                targets: [
+                    { id: "table_desc", text: "HTML Table" },
+                    { id: "tr_desc", text: "Table Row" },
+                    { id: "td_desc", text: "Table Data Cell" },
+                    { id: "width_desc", text: "Element Width" },
+                    { id: "height_desc", text: "Element Height" }
+                ],
+
+                correctPairs: {
+                    table_tag: "table_desc",
+                    tr_tag: "tr_desc",
+                    td_tag: "td_desc",
+                    width_prop: "width_desc",
+                    height_prop: "height_desc"
+                }
+            },
+
+            {
+                question: "Match the HTML/CSS term to its description:",
+
+                items: [
+                    { id: "head_tag", text: "<head>" },
+                    { id: "body_tag", text: "<body>" },
+                    { id: "title_tag", text: "<title>" },
+                    { id: "font_family_prop", text: "font-family" },
+                    { id: "line_height_prop", text: "line-height" }
+                ],
+
+                targets: [
+                    { id: "head_desc", text: "Document Metadata" },
+                    { id: "body_desc", text: "Visible Page Content" },
+                    { id: "title_desc", text: "Browser Tab Title" },
+                    { id: "font_family_desc", text: "Text Font Style" },
+                    { id: "line_height_desc", text: "Vertical Text Spacing" }
+                ],
+
+                correctPairs: {
+                    head_tag: "head_desc",
+                    body_tag: "body_desc",
+                    title_tag: "title_desc",
+                    font_family_prop: "font_family_desc",
+                    line_height_prop: "line_height_desc"
+                }
+            },
+
+            {
+                question: "Match the HTML/CSS term to its description:",
+
+                items: [
+                    { id: "ol_tag", text: "<ol>" },
+                    { id: "li_tag", text: "<li>" },
+                    { id: "span_tag", text: "<span>" },
+                    { id: "text_decoration_prop", text: "text-decoration" },
+                    { id: "box_shadow_prop", text: "box-shadow" }
+                ],
+
+                targets: [
+                    { id: "ol_desc", text: "Ordered List" },
+                    { id: "li_desc", text: "List Item" },
+                    { id: "span_desc", text: "Inline Text Container" },
+                    { id: "text_decoration_desc", text: "Underline/Strikethrough" },
+                    { id: "box_shadow_desc", text: "Element Shadow Effect" }
+                ],
+
+                correctPairs: {
+                    ol_tag: "ol_desc",
+                    li_tag: "li_desc",
+                    span_tag: "span_desc",
+                    text_decoration_prop: "text_decoration_desc",
+                    box_shadow_prop: "box_shadow_desc"
+                }
+            },
+
+            {
+                question: "Match the HTML/CSS term to its description:",
+
+                items: [
+                    { id: "header_tag", text: "<header>" },
+                    { id: "nav_tag", text: "<nav>" },
+                    { id: "section_tag", text: "<section>" },
+                    { id: "position_prop", text: "position" },
+                    { id: "z_index_prop", text: "z-index" }
+                ],
+
+                targets: [
+                    { id: "header_desc", text: "Introductory Content" },
+                    { id: "nav_desc", text: "Navigation Links" },
+                    { id: "section_desc", text: "Standalone Section" },
+                    { id: "position_desc", text: "Element Positioning" },
+                    { id: "z_index_desc", text: "Element Stack Order" }
+                ],
+
+                correctPairs: {
+                    header_tag: "header_desc",
+                    nav_tag: "nav_desc",
+                    section_tag: "section_desc",
+                    position_prop: "position_desc",
+                    z_index_prop: "z_index_desc"
+                }
+            },
+
+            {
+                question: "Match the HTML/CSS term to its description:",
+
+                items: [
+                    { id: "article_tag", text: "<article>" },
+                    { id: "aside_tag", text: "<aside>" },
+                    { id: "main_tag", text: "<main>" },
+                    { id: "float_prop", text: "float" },
+                    { id: "clear_prop", text: "clear" }
+                ],
+
+                targets: [
+                    { id: "article_desc", text: "Independent Content" },
+                    { id: "aside_desc", text: "Sidebar Content" },
+                    { id: "main_desc", text: "Dominant Content" },
+                    { id: "float_desc", text: "Element Side Placement" },
+                    { id: "clear_desc", text: "Prevents Floating Elements" }
+                ],
+
+                correctPairs: {
+                    article_tag: "article_desc",
+                    aside_tag: "aside_desc",
+                    main_tag: "main_desc",
+                    float_prop: "float_desc",
+                    clear_prop: "clear_desc"
+                }
+            },
+
+            {
+                question: "Match the HTML/CSS term to its description:",
+
+                items: [
+                    { id: "figure_tag", text: "<figure>" },
+                    { id: "figcaption_tag", text: "<figcaption>" },
+                    { id: "time_tag", text: "<time>" },
+                    { id: "opacity_prop", text: "opacity" },
+                    { id: "cursor_prop", text: "cursor" }
+                ],
+
+                targets: [
+                    { id: "figure_desc", text: "Self-contained Content" },
+                    { id: "figcaption_desc", text: "Figure Caption" },
+                    { id: "time_desc", text: "Specific Date/Time" },
+                    { id: "opacity_desc", text: "Transparency Level" },
+                    { id: "cursor_desc", text: "Mouse Pointer Style" }
+                ],
+
+                correctPairs: {
+                    figure_tag: "figure_desc",
+                    figcaption_tag: "figcaption_desc",
+                    time_tag: "time_desc",
+                    opacity_prop: "opacity_desc",
+                    cursor_prop: "cursor_desc"
+                }
+            }
+        ]
+    },
+
+    {
+        type: "ordering",
+        passingScore: 3,
+
+        questions: [
+            {
+                question: "Arrange the basic HTML boilerplate tags in correct hierarchical order (top to bottom):",
+                correctOrder: [
+                    "<!DOCTYPE html>",
+                    "<html>",
+                    "<head>",
+                    "<title>My Page</title>",
+                    "</head>",
+                    "<body>",
+                    "</body>",
+                    "</html>"
+                ]
+            },
+            {
+                question: "Arrange the CSS Box Model layers from inside out:",
+                correctOrder: [
+                    "Content",
+                    "Padding",
+                    "Border",
+                    "Margin"
+                ]
+            },
+            {
+                question: "Arrange these HTML heading tags from LARGEST to SMALLEST size:",
+                correctOrder: [
+                    "<h1>",
+                    "<h2>",
+                    "<h3>",
+                    "<h4>",
+                    "<h5>",
+                    "<h6>"
+                ]
+            },
+            {
+                question: "Arrange the steps to link an external CSS stylesheet to an HTML page:",
+                correctOrder: [
+                    "Create a style.css file",
+                    "Open the HTML document",
+                    "Locate the <head> section",
+                    "Add <link rel=\"stylesheet\" href=\"style.css\">",
+                    "Save and refresh browser"
+                ]
+            },
+            {
+                question: "Arrange these HTML tags in the order they appear when building a standard HTML table with headers and one row:",
+                correctOrder: [
+                    "<table>",
+                    "<thead>",
+                    "<tr>",
+                    "<th>Header</th>",
+                    "</tr>",
+                    "</thead>",
+                    "<tbody>",
+                    "<tr>",
+                    "<td>Data</td>",
+                    "</tr>",
+                    "</tbody>",
+                    "</table>"
+                ]
+            }
+        ]
+    }
+];
+
+/* ============================================================
+   GLOBAL STATE
+   ============================================================ */
+
+let currentSectionIndex = 0;
+let currentQuestionIndex = 0;
+let totalScore = 0;
+let timer = null;
+let timeLeft = 15;
+let currentMatches = {};
+let draggedElement = null;
+
+/* ============================================================
+   DOM ELEMENTS
+   ============================================================ */
+
+const startScreen = document.getElementById("start-screen");
+const quizScreenMC = document.getElementById("quiz-screen-mc");
+const quizScreenDD = document.getElementById("quiz-screen-dd");
+const quizScreenOrdering = document.getElementById("quiz-screen-ordering");
+const resultScreen = document.getElementById("result-screen");
+
+const startButton = document.getElementById("start-button");
+const resumeBox = document.getElementById("resume-box");
+const resumeText = document.getElementById("resume-text");
+const resumeButton = document.getElementById("resume-button");
+const clearSavedButton = document.getElementById("clear-saved-button");
+
+const customMessageBox = document.getElementById("custom-message-box");
+const messageContent = document.getElementById("message-content");
+const messageBoxOk = document.getElementById("message-box-ok");
+
+const questionTextMC = document.getElementById("question-text-mc");
+const answersContainerMC = document.getElementById("answers-container-mc");
+const scoreDisplayMC = document.getElementById("score-display-mc");
+const progressTextMC = document.getElementById("progress-text-mc");
+const timerBarMC = document.getElementById("timer-bar-mc");
+
+const questionTextDD = document.getElementById("question-text-dd");
+const draggableContainer = document.getElementById("draggable-items-container");
+const dropTargetContainer = document.getElementById("drop-targets-container");
+const scoreDisplayDD = document.getElementById("score-display-dd");
+const progressTextDD = document.getElementById("progress-text-dd");
+const timerBarDD = document.getElementById("timer-bar-dd");
+
+const questionTextOrdering = document.getElementById("question-text-ordering");
+const orderingContainer = document.getElementById("ordering-items-container");
+const checkOrderButton = document.getElementById("check-order-button");
+const scoreDisplayOrdering = document.getElementById("score-display-ordering");
+const progressTextOrdering = document.getElementById("progress-text-ordering");
+const timerBarOrdering = document.getElementById("timer-bar-ordering");
+
+const finalMessage = document.getElementById("final-message");
+const finalScoreDisplay = document.getElementById("final-score-display");
+const restartButton = document.getElementById("restart-button");
+const finalResetButton = document.getElementById("final-reset-button");
+
+/* ============================================================
+   UTILITY & UI FUNCTIONS
+   ============================================================ */
+
+function showCustomMessage(text, callback) {
+    messageContent.textContent = text;
+    customMessageBox.style.display = "block";
+
+    const handler = () => {
+        customMessageBox.style.display = "none";
+        messageBoxOk.removeEventListener("click", handler);
+        if (callback) callback();
+    };
+
+    messageBoxOk.addEventListener("click", handler);
+}
+
+function updateScoreDisplays() {
+    scoreDisplayMC.textContent = totalScore;
+    scoreDisplayDD.textContent = totalScore;
+    scoreDisplayOrdering.textContent = totalScore;
+}
+
+function saveProgress() {
+    const data = {
+        currentSectionIndex,
+        currentQuestionIndex,
+        totalScore
+    };
+    localStorage.setItem("quiz_progress", JSON.stringify(data));
+}
+
+function checkSavedProgress() {
+    const saved = localStorage.getItem("quiz_progress");
+    if (saved) {
+        try {
+            const data = JSON.parse(saved);
+            resumeText.textContent = `Section ${data.currentSectionIndex + 1}, Question ${data.currentQuestionIndex + 1} (Score: ${data.totalScore})`;
+            resumeBox.classList.remove("hidden");
+        } catch (e) {
+            localStorage.removeItem("quiz_progress");
+        }
+    }
+}
+
+function clearProgress() {
+    localStorage.removeItem("quiz_progress");
+    resumeBox.classList.add("hidden");
+}
+
+function hideAllScreens() {
+    startScreen.classList.add("hidden");
+    quizScreenMC.classList.add("hidden");
+    quizScreenDD.classList.add("hidden");
+    quizScreenOrdering.classList.add("hidden");
+    resultScreen.classList.add("hidden");
+}
+
+/* ============================================================
+   TIMER LOGIC
+   ============================================================ */
+
+function startTimer(duration, timerBarElement, onTimeout) {
+    clearInterval(timer);
+    timeLeft = duration;
+
+    // Reset bar state
+    timerBarElement.style.transition = "none";
+    timerBarElement.style.width = "100%";
+    timerBarElement.style.backgroundColor = "#4CAF50"; // Green
+
+    setTimeout(() => {
+        timerBarElement.style.transition = `width ${duration}s linear, background-color 0.5s ease`;
+        timerBarElement.style.width = "0%";
+    }, 50);
+
+    timer = setInterval(() => {
+        timeLeft--;
+
+        // Turn red when 15 seconds or fewer remain
+        if (timeLeft <= 15) {
+            timerBarElement.style.backgroundColor = "#ef4444"; // Red
+        }
+
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            onTimeout();
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timer);
+}
+
+/* ============================================================
+   QUIZ ENGINE & FLOW
+   ============================================================ */
+
+function startQuiz(resume = false) {
+    if (resume) {
+        const saved = localStorage.getItem("quiz_progress");
+        if (saved) {
+            const data = JSON.parse(saved);
+            currentSectionIndex = data.currentSectionIndex;
+            currentQuestionIndex = data.currentQuestionIndex;
+            totalScore = data.totalScore;
+        }
+    } else {
+        currentSectionIndex = 0;
+        currentQuestionIndex = 0;
+        totalScore = 0;
+        clearProgress();
+    }
+
+    updateScoreDisplays();
+    loadSectionQuestion();
+}
+
+function loadSectionQuestion() {
+    if (currentSectionIndex >= quizSections.length) {
+        showResults();
+        return;
+    }
+
+    const currentSection = quizSections[currentSectionIndex];
+
+    if (currentQuestionIndex >= currentSection.questions.length) {
+        // Evaluate Section Score against requirement
+        if (totalScore < currentSection.passingScore) {
+            showCustomMessage(`Section ${currentSectionIndex + 1} completed, but score requirement was not met. Retrying section!`, () => {
+                currentQuestionIndex = 0;
+                loadSectionQuestion();
+            });
+            return;
+        }
+
+        currentSectionIndex++;
+        currentQuestionIndex = 0;
+        saveProgress();
+
+        if (currentSectionIndex >= quizSections.length) {
+            showResults();
+        } else {
+            showCustomMessage(`Great job! Advancing to Section ${currentSectionIndex + 1}.`, () => {
+                loadSectionQuestion();
+            });
+        }
+        return;
+    }
+
+    saveProgress();
+    hideAllScreens();
+
+    if (currentSection.type === "multiple-choice") {
+        renderMCQuestion();
+    } else if (currentSection.type === "drag-and-drop") {
+        renderDDQuestion();
+    } else if (currentSection.type === "ordering") {
+        renderOrderingQuestion();
+    }
+}
+
+/* ============================================================
+   1. MULTIPLE CHOICE SECTION
+   ============================================================ */
+
+function renderMCQuestion() {
+    quizScreenMC.classList.remove("hidden");
+    const section = quizSections[currentSectionIndex];
+    const qData = section.questions[currentQuestionIndex];
+
+    questionTextMC.textContent = qData.question;
+    progressTextMC.textContent = `Question ${currentQuestionIndex + 1} of ${section.questions.length}`;
+    answersContainerMC.innerHTML = "";
+
+    qData.answers.forEach(ans => {
+        const btn = document.createElement("button");
+        btn.className = "bg-gray-100 hover:bg-blue-100 text-gray-800 font-semibold py-3 px-4 rounded-lg border border-gray-200 transition-colors duration-200 text-center";
+        btn.textContent = ans.text;
+        btn.onclick = () => handleMCAnswer(ans.correct);
+        answersContainerMC.appendChild(btn);
+    });
+
+    startTimer(60, timerBarMC, () => {
+        showCustomMessage("Time's up for this question!", () => {
+            currentQuestionIndex++;
+            loadSectionQuestion();
+        });
+    });
+}
+
+function handleMCAnswer(isCorrect) {
+    stopTimer();
+    if (isCorrect) {
+        totalScore++;
+        updateScoreDisplays();
+        showCustomMessage("Correct!", () => {
+            currentQuestionIndex++;
+            loadSectionQuestion();
+        });
+    } else {
+        showCustomMessage("Incorrect!", () => {
+            currentQuestionIndex++;
+            loadSectionQuestion();
+        });
+    }
+}
+
+/* ============================================================
+   2. DRAG AND DROP SECTION
+   ============================================================ */
+
+function renderDDQuestion() {
+    quizScreenDD.classList.remove("hidden");
+    const section = quizSections[currentSectionIndex];
+    const qData = section.questions[currentQuestionIndex];
+
+    questionTextDD.textContent = qData.question;
+    progressTextDD.textContent = `Question ${currentQuestionIndex + 1} of ${section.questions.length}`;
+
+    draggableContainer.innerHTML = "";
+    dropTargetContainer.innerHTML = "";
+    currentMatches = {};
+
+    // Shuffle items and targets
+    const shuffledItems = [...qData.items].sort(() => Math.random() - 0.5);
+    const shuffledTargets = [...qData.targets].sort(() => Math.random() - 0.5);
+
+    shuffledItems.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "draggable-item";
+        div.textContent = item.text;
+        div.draggable = true;
+        div.dataset.id = item.id;
+
+        div.addEventListener("dragstart", (e) => {
+            draggedElement = div;
+            e.dataTransfer.setData("text/plain", item.id);
+        });
+
+        draggableContainer.appendChild(div);
+    });
+
+    shuffledTargets.forEach(target => {
+        const div = document.createElement("div");
+        div.className = "drop-target";
+        div.textContent = target.text;
+        div.dataset.id = target.id;
+
+        div.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            div.classList.add("drag-over");
+        });
+
+        div.addEventListener("dragleave", () => {
+            div.classList.remove("drag-over");
+        });
+
+        div.addEventListener("drop", (e) => {
+            e.preventDefault();
+            div.classList.remove("drag-over");
+            const itemId = e.dataTransfer.getData("text/plain");
+
+            if (itemId && draggedElement) {
+                div.textContent = `${target.text} : [ ${draggedElement.textContent} ]`;
+                div.classList.add("correct-match");
+                draggedElement.classList.add("dropped");
+                draggedElement.draggable = false;
+                currentMatches[itemId] = target.id;
+
+                checkDDCompletion(qData);
+            }
+        });
+
+        dropTargetContainer.appendChild(div);
+    });
+
+    startTimer(60, timerBarDD, () => {
+        showCustomMessage("Time's up for matching!", () => {
+            evaluateDDQuestion(qData);
+        });
+    });
+}
+
+function checkDDCompletion(qData) {
+    if (Object.keys(currentMatches).length === qData.items.length) {
+        stopTimer();
+        evaluateDDQuestion(qData);
+    }
+}
+
+function evaluateDDQuestion(qData) {
+    let allCorrect = true;
+    for (let itemId in qData.correctPairs) {
+        if (currentMatches[itemId] !== qData.correctPairs[itemId]) {
+            allCorrect = false;
+            break;
+        }
+    }
+
+    if (allCorrect && Object.keys(currentMatches).length === qData.items.length) {
+        totalScore++;
+        updateScoreDisplays();
+        showCustomMessage("Perfect Match! Correct!", () => {
+            currentQuestionIndex++;
+            loadSectionQuestion();
+        });
+    } else {
+        showCustomMessage("Matches were incorrect or incomplete.", () => {
+            currentQuestionIndex++;
+            loadSectionQuestion();
+        });
+    }
+}
+
+/* ============================================================
+   3. ORDERING SECTION
+   ============================================================ */
+
+function renderOrderingQuestion() {
+    quizScreenOrdering.classList.remove("hidden");
+    const section = quizSections[currentSectionIndex];
+    const qData = section.questions[currentQuestionIndex];
+
+    questionTextOrdering.textContent = qData.question;
+    progressTextOrdering.textContent = `Question ${currentQuestionIndex + 1} of ${section.questions.length}`;
+
+    orderingContainer.innerHTML = "";
+
+    const shuffled = [...qData.correctOrder].sort(() => Math.random() - 0.5);
+
+    shuffled.forEach((text) => {
+        const item = document.createElement("div");
+        item.className = "ordering-item";
+        item.textContent = text;
+        item.draggable = true;
+
+        item.addEventListener("dragstart", () => {
+            draggedElement = item;
+            item.classList.add("opacity-50");
+        });
+
+        item.addEventListener("dragend", () => {
+            item.classList.remove("opacity-50");
+            document.querySelectorAll(".ordering-item").forEach(el => {
+                el.classList.remove("drag-over-placeholder-above", "drag-over-placeholder-below");
+            });
+        });
+
+        item.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            const bounding = item.getBoundingClientRect();
+            const offset = e.clientY - bounding.top - (bounding.height / 2);
+
+            item.classList.remove("drag-over-placeholder-above", "drag-over-placeholder-below");
+
+            if (offset > 0) {
+                item.classList.add("drag-over-placeholder-below");
+            } else {
+                item.classList.add("drag-over-placeholder-above");
+            }
+        });
+
+        item.addEventListener("dragleave", () => {
+            item.classList.remove("drag-over-placeholder-above", "drag-over-placeholder-below");
+        });
+
+        item.addEventListener("drop", (e) => {
+            e.preventDefault();
+            item.classList.remove("drag-over-placeholder-above", "drag-over-placeholder-below");
+
+            if (draggedElement && draggedElement !== item) {
+                const bounding = item.getBoundingClientRect();
+                const offset = e.clientY - bounding.top - (bounding.height / 2);
+
+                if (offset > 0) {
+                    orderingContainer.insertBefore(draggedElement, item.nextSibling);
+                } else {
+                    orderingContainer.insertBefore(draggedElement, item);
+                }
+            }
+        });
+
+        orderingContainer.appendChild(item);
+    });
+
+    checkOrderButton.onclick = () => {
+        stopTimer();
+        evaluateOrderingQuestion(qData);
+    };
+
+    startTimer(60, timerBarOrdering, () => {
+        showCustomMessage("Time's up!", () => {
+            evaluateOrderingQuestion(qData);
+        });
+    });
+}
+
+function evaluateOrderingQuestion(qData) {
+    const currentOrder = Array.from(orderingContainer.children).map(el => el.textContent.trim());
+    let isCorrect = true;
+
+    if (currentOrder.length !== qData.correctOrder.length) {
+        isCorrect = false;
+    } else {
+        for (let i = 0; i < currentOrder.length; i++) {
+            if (currentOrder[i] !== qData.correctOrder[i]) {
+                isCorrect = false;
+                break;
+            }
+        }
+    }
+
+    if (isCorrect) {
+        totalScore++;
+        updateScoreDisplays();
+        showCustomMessage("Correct Order!", () => {
+            currentQuestionIndex++;
+            loadSectionQuestion();
+        });
+    } else {
+        showCustomMessage("Incorrect Order!", () => {
+            currentQuestionIndex++;
+            loadSectionQuestion();
+        });
+    }
+}
+
+/* ============================================================
+   RESULTS & REWARD ANIMATION
+   ============================================================ */
+
+function showResults() {
+    clearProgress();
+    hideAllScreens();
+    resultScreen.classList.remove("hidden");
+
+    finalMessage.textContent = "Quiz Completed!";
+    finalScoreDisplay.textContent = `Your Final Score: ${totalScore}`;
+
+    if (totalScore >= 15) {
+        document.body.classList.add("extra-unlocked-bg");
+        triggerTagParticleAnimation();
+    }
+}
+
+function triggerTagParticleAnimation() {
+    const tags = ["<html>", "<body>", "<div>", "<h1>", "<p>", "<a>", "<style>", "<script>", "<header>", "<footer>"];
+
+    for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+            const particle = document.createElement("div");
+            particle.className = "html-tag-particle";
+            particle.textContent = tags[Math.floor(Math.random() * tags.length)];
+            particle.style.left = Math.random() * 90 + 5 + "vw";
+            particle.style.bottom = "-50px";
+            particle.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 6000);
+        }, i * 150);
+    }
+}
+
+function resetQuizFull() {
+    document.body.classList.remove("extra-unlocked-bg");
+    clearProgress();
+    currentSectionIndex = 0;
+    currentQuestionIndex = 0;
+    totalScore = 0;
+    hideAllScreens();
+    startScreen.classList.remove("hidden");
+}
+
+/* ============================================================
+   EVENT LISTENERS & INIT
+   ============================================================ */
+
+startButton.addEventListener("click", () => startQuiz(false));
+resumeButton.addEventListener("click", () => startQuiz(true));
+clearSavedButton.addEventListener("click", () => {
+    clearProgress();
+    startQuiz(false);
+});
+restartButton.addEventListener("click", () => resetQuizFull());
+finalResetButton.addEventListener("click", () => resetQuizFull());
+
+// Initialize check on page load
+checkSavedProgress();
+
+</script>
+</body>
+</html>
