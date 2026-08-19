@@ -639,35 +639,35 @@ const quizSections = [
 
     {
         type: "drag-and-drop",
-        passingScore: 7,
+        passingScore: 3,
 
         questions: [
 
-            {
+                {
                 question: "Match the HTML/CSS term to its description:",
 
                 items: [
                     { id: "h1_tag", text: "<h1>" },
                     { id: "p_tag", text: "<p>" },
                     { id: "div_tag", text: "<div>" },
-                    { id: "color_prop", text: "color" },
-                    { id: "margin_prop", text: "margin" }
+                    { id: "span_tag", text: "<span>" },
+                    { id: "title_tag", text: "<title>" }
                 ],
 
                 targets: [
                     { id: "h1_desc", text: "Largest Heading" },
                     { id: "p_desc", text: "Paragraph Text" },
-                    { id: "div_desc", text: "Generic Container" },
-                    { id: "color_desc", text: "Text Color" },
-                    { id: "margin_desc", text: "Outer Spacing" }
+                    { id: "div_desc", text: "Block Container" },
+                    { id: "span_desc", text: "Inline Container" },
+                    { id: "title_desc", text: "Browser Tab Name" }
                 ],
 
                 correctPairs: {
                     h1_tag: "h1_desc",
                     p_tag: "p_desc",
                     div_tag: "div_desc",
-                    color_prop: "color_desc",
-                    margin_prop: "margin_desc"
+                    span_tag: "span_desc",
+                    title_tag: "title_desc"
                 }
             },
 
@@ -678,80 +678,24 @@ const quizSections = [
                     { id: "a_tag", text: "<a>" },
                     { id: "img_tag", text: "<img>" },
                     { id: "ul_tag", text: "<ul>" },
-                    { id: "background_color_prop", text: "background-color" },
-                    { id: "font_size_prop", text: "font-size" }
+                    { id: "li_tag", text: "<li>" },
+                    { id: "br_tag", text: "<br>" }
                 ],
 
                 targets: [
                     { id: "a_desc", text: "Creates a Hyperlink" },
-                    { id: "img_desc", text: "Embeds an Image" },
+                    { id: "img_desc", text: "Used to Embed Image" },
                     { id: "ul_desc", text: "Unordered List" },
-                    { id: "background_color_desc", text: "Element Background" },
-                    { id: "font_size_desc", text: "Size of Text" }
+                    { id: "li_desc", text: "Single List Item" },
+                    { id: "br_desc", text: "Self-Closing Line Break" }
                 ],
 
                 correctPairs: {
                     a_tag: "a_desc",
                     img_tag: "img_desc",
                     ul_tag: "ul_desc",
-                    background_color_prop: "background_color_desc",
-                    font_size_prop: "font_size_desc"
-                }
-            },
-
-            {
-                question: "Match the HTML/CSS term to its description:",
-
-                items: [
-                    { id: "br_tag", text: "<br>" },
-                    { id: "input_tag", text: "<input>" },
-                    { id: "footer_tag", text: "<footer>" },
-                    { id: "padding_prop", text: "padding" },
-                    { id: "border_prop", text: "border" }
-                ],
-
-                targets: [
-                    { id: "br_desc", text: "Line Break" },
-                    { id: "input_desc", text: "Form Input Field" },
-                    { id: "footer_desc", text: "Section Footer" },
-                    { id: "padding_desc", text: "Inner Spacing" },
-                    { id: "border_desc", text: "Element Outline" }
-                ],
-
-                correctPairs: {
-                    br_tag: "br_desc",
-                    input_tag: "input_desc",
-                    footer_tag: "footer_desc",
-                    padding_prop: "padding_desc",
-                    border_prop: "border_desc"
-                }
-            },
-
-            {
-                question: "Match the HTML/CSS term to its description:",
-
-                items: [
-                    { id: "form_tag", text: "<form>" },
-                    { id: "label_tag", text: "<label>" },
-                    { id: "button_tag", text: "<button>" },
-                    { id: "text_align_prop", text: "text-align" },
-                    { id: "display_prop", text: "display" }
-                ],
-
-                targets: [
-                    { id: "form_desc", text: "Collects User Input" },
-                    { id: "label_desc", text: "Input Field Caption" },
-                    { id: "button_desc", text: "Clickable Action" },
-                    { id: "text_align_desc", text: "Horizontal Text Alignment" },
-                    { id: "display_desc", text: "Element Layout Type" }
-                ],
-
-                correctPairs: {
-                    form_tag: "form_desc",
-                    label_tag: "label_desc",
-                    button_tag: "button_desc",
-                    text_align_prop: "text_align_desc",
-                    display_prop: "display_desc"
+                    li_tag: "li_desc",
+                    br_tag: "br_desc"
                 }
             },
 
@@ -761,25 +705,25 @@ const quizSections = [
                 items: [
                     { id: "table_tag", text: "<table>" },
                     { id: "tr_tag", text: "<tr>" },
-                    { id: "td_tag", text: "<td>" },
-                    { id: "width_prop", text: "width" },
-                    { id: "height_prop", text: "height" }
+                    { id: "meta_tag", text: "<meta>" },
+                    { id: "utf8_val", text: "utf-8" },
+                    { id: "keywords_val", text: "keywords" }
                 ],
 
                 targets: [
-                    { id: "table_desc", text: "HTML Table" },
-                    { id: "tr_desc", text: "Table Row" },
-                    { id: "td_desc", text: "Table Data Cell" },
-                    { id: "width_desc", text: "Element Width" },
-                    { id: "height_desc", text: "Element Height" }
+                    { id: "table_desc", text: "HTML Table Container" },
+                    { id: "tr_desc", text: "Creates Horizontal Rows" },
+                    { id: "meta_desc", text: "Document Metadata Tag" },
+                    { id: "utf8_desc", text: "Standard Character Encoding" },
+                    { id: "keywords_desc", text: "Search Engine Meta Name" }
                 ],
 
                 correctPairs: {
                     table_tag: "table_desc",
                     tr_tag: "tr_desc",
-                    td_tag: "td_desc",
-                    width_prop: "width_desc",
-                    height_prop: "height_desc"
+                    meta_tag: "meta_desc",
+                    utf8_val: "utf8_desc",
+                    keywords_val: "keywords_desc"
                 }
             },
 
@@ -787,27 +731,27 @@ const quizSections = [
                 question: "Match the HTML/CSS term to its description:",
 
                 items: [
-                    { id: "head_tag", text: "<head>" },
-                    { id: "body_tag", text: "<body>" },
-                    { id: "title_tag", text: "<title>" },
-                    { id: "font_family_prop", text: "font-family" },
-                    { id: "line_height_prop", text: "line-height" }
+                    { id: "strong_tag", text: "<strong>" },
+                    { id: "em_tag", text: "<em>" },
+                    { id: "inline_css", text: "Inline Style" },
+                    { id: "internal_style", text: "Internal Style" },
+                    { id: "external_style", text: "External Style" }
                 ],
 
                 targets: [
-                    { id: "head_desc", text: "Document Metadata" },
-                    { id: "body_desc", text: "Visible Page Content" },
-                    { id: "title_desc", text: "Browser Tab Title" },
-                    { id: "font_family_desc", text: "Text Font Style" },
-                    { id: "line_height_desc", text: "Vertical Text Spacing" }
+                    { id: "strong_desc", text: "Important Bold Text" },
+                    { id: "em_desc", text: "Emphasized Italic Text" },
+                    { id: "inline_desc", text: "Written in Tag Style Attribute" },
+                    { id: "internal_desc", text: "Written Inside <style> Tags" },
+                    { id: "external_desc", text: "Linked .css File" }
                 ],
 
                 correctPairs: {
-                    head_tag: "head_desc",
-                    body_tag: "body_desc",
-                    title_tag: "title_desc",
-                    font_family_prop: "font_family_desc",
-                    line_height_prop: "line_height_desc"
+                    strong_tag: "strong_desc",
+                    em_tag: "em_desc",
+                    inline_css: "inline_desc",
+                    internal_style: "internal_desc",
+                    external_style: "external_desc"
                 }
             },
 
@@ -815,111 +759,27 @@ const quizSections = [
                 question: "Match the HTML/CSS term to its description:",
 
                 items: [
-                    { id: "ol_tag", text: "<ol>" },
-                    { id: "li_tag", text: "<li>" },
-                    { id: "span_tag", text: "<span>" },
-                    { id: "text_decoration_prop", text: "text-decoration" },
-                    { id: "box_shadow_prop", text: "box-shadow" }
+                    { id: "bg_color_prop", text: "background-color" },
+                    { id: "font_size_prop", text: "font-size" },
+                    { id: "self_closing_concept", text: "Self-Closing" },
+                    { id: "hyperlink_concept", text: "Hyperlink" },
+                    { id: "rows_concept", text: "Rows" }
                 ],
 
                 targets: [
-                    { id: "ol_desc", text: "Ordered List" },
-                    { id: "li_desc", text: "List Item" },
-                    { id: "span_desc", text: "Inline Text Container" },
-                    { id: "text_decoration_desc", text: "Underline/Strikethrough" },
-                    { id: "box_shadow_desc", text: "Element Shadow Effect" }
+                    { id: "bg_color_desc", text: "Sets Element Background" },
+                    { id: "font_size_desc", text: "Controls Text Size" },
+                    { id: "self_closing_desc", text: "Tags Without Closing Partner" },
+                    { id: "hyperlink_desc", text: "Clickable Page Connection" },
+                    { id: "rows_desc", text: "Horizontal Data Lines" }
                 ],
 
                 correctPairs: {
-                    ol_tag: "ol_desc",
-                    li_tag: "li_desc",
-                    span_tag: "span_desc",
-                    text_decoration_prop: "text_decoration_desc",
-                    box_shadow_prop: "box_shadow_desc"
-                }
-            },
-
-            {
-                question: "Match the HTML/CSS term to its description:",
-
-                items: [
-                    { id: "header_tag", text: "<header>" },
-                    { id: "nav_tag", text: "<nav>" },
-                    { id: "section_tag", text: "<section>" },
-                    { id: "position_prop", text: "position" },
-                    { id: "z_index_prop", text: "z-index" }
-                ],
-
-                targets: [
-                    { id: "header_desc", text: "Introductory Content" },
-                    { id: "nav_desc", text: "Navigation Links" },
-                    { id: "section_desc", text: "Standalone Section" },
-                    { id: "position_desc", text: "Element Positioning" },
-                    { id: "z_index_desc", text: "Element Stack Order" }
-                ],
-
-                correctPairs: {
-                    header_tag: "header_desc",
-                    nav_tag: "nav_desc",
-                    section_tag: "section_desc",
-                    position_prop: "position_desc",
-                    z_index_prop: "z_index_desc"
-                }
-            },
-
-            {
-                question: "Match the HTML/CSS term to its description:",
-
-                items: [
-                    { id: "article_tag", text: "<article>" },
-                    { id: "aside_tag", text: "<aside>" },
-                    { id: "main_tag", text: "<main>" },
-                    { id: "float_prop", text: "float" },
-                    { id: "clear_prop", text: "clear" }
-                ],
-
-                targets: [
-                    { id: "article_desc", text: "Independent Content" },
-                    { id: "aside_desc", text: "Sidebar Content" },
-                    { id: "main_desc", text: "Dominant Content" },
-                    { id: "float_desc", text: "Element Side Placement" },
-                    { id: "clear_desc", text: "Prevents Floating Elements" }
-                ],
-
-                correctPairs: {
-                    article_tag: "article_desc",
-                    aside_tag: "aside_desc",
-                    main_tag: "main_desc",
-                    float_prop: "float_desc",
-                    clear_prop: "clear_desc"
-                }
-            },
-
-            {
-                question: "Match the HTML/CSS term to its description:",
-
-                items: [
-                    { id: "figure_tag", text: "<figure>" },
-                    { id: "figcaption_tag", text: "<figcaption>" },
-                    { id: "time_tag", text: "<time>" },
-                    { id: "opacity_prop", text: "opacity" },
-                    { id: "cursor_prop", text: "cursor" }
-                ],
-
-                targets: [
-                    { id: "figure_desc", text: "Self-contained Content" },
-                    { id: "figcaption_desc", text: "Figure Caption" },
-                    { id: "time_desc", text: "Specific Date/Time" },
-                    { id: "opacity_desc", text: "Transparency Level" },
-                    { id: "cursor_desc", text: "Mouse Pointer Style" }
-                ],
-
-                correctPairs: {
-                    figure_tag: "figure_desc",
-                    figcaption_tag: "figcaption_desc",
-                    time_tag: "time_desc",
-                    opacity_prop: "opacity_desc",
-                    cursor_prop: "cursor_desc"
+                    bg_color_prop: "bg_color_desc",
+                    font_size_prop: "font_size_desc",
+                    self_closing_concept: "self_closing_desc",
+                    hyperlink_concept: "hyperlink_desc",
+                    rows_concept: "rows_desc"
                 }
             }
         ]
